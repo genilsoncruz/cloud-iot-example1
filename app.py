@@ -77,7 +77,9 @@ X = df[["time_index"]]
 y = df["temperatura"]
 
 model = LinearRegression()
-model.fit(X, y)
+
+if X:
+    model.fit(X, y)
 
 # -------------------------
 # PREVISÃO
