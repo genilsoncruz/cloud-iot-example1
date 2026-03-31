@@ -67,65 +67,67 @@ st.write(df.describe())
 # -------------------------
 # TREINAMENTO DO MODELO
 # -------------------------
-if len(df) > 0:
+if len(df):
     # Criando um índice numérico para a regressão
     df["time_index"] = np.arange(len(df))
+else:
+    df["time_index"] = np.nan
     
-    X = df[["time_index"]]
-    y = df["temperatura"]
-    
-    model = LinearRegression()
-    model.fit(X, y)
-    
-    # -------------------------
-    # PREVISÃO
-    # -------------------------
-    
-    st.divider()
-    st.subheader("Previsão de Tendência")
-    
-    future_steps = st.slider("Passos no futuro para previsão", 1, 50, 10)
-    
-    # Criando índices futuros
-    last_index = df["time_index"].iloc[-1]
-    future_index = np.arange(last_index + 1, last_index + 1 + future_steps).reshape(-1, 1)
-    
-    predictions = model.predict(future_index)
-    
-    # Exibindo tabela de previsão
-    pred_df = pd.DataFrame({
-        "passo_futuro": range(1, future_steps + 1),
-        "temperatura_prevista": predictions
-    })
-    st.dataframe(pred_df)
-    
-    # -------------------------
-    # ALERTA DE CONFORTO
-    # -------------------------
-    
-    limite = 30
-    if predictions.mean() > limite:
-        st.error(f"⚠️ Alerta: Média prevista ({predictions.mean():.2f}°C) acima do limite de {limite}°C!")
-    else:
-        st.success(f"Ambiente estável. Média prevista: {predictions.mean():.2f}°C.")
-    
-    # -------------------------
-    # GRÁFICO COM PREVISÃO
-    # -------------------------
-    
-    fig2, ax2 = plt.subplots()
-    # Histórico
-    ax2.plot(df["time_index"], df["temperatura"], label="Histórico", color="blue")
-    # Previsão
-    ax2.plot(
-        range(last_index + 1, last_index + 1 + future_steps),
-        predictions,
-        label="Previsão (Regressão)",
-        color="red",
-        linestyle="--"
-    )
-    
-    ax2.set_xlabel("Índice de Leitura")
-    ax2.set_ylabel("Temperatura")
-    ax2.legend()
-    st.pyplot(fig2)
+X = df[["time_index"]]
+y = df["temperatura"]
+
+model = LinearRegression()
+model.fit(X, y)
+
+# -------------------------
+# PREVISÃO
+# -------------------------
+
+st.divider()
+st.subheader("Previsão de Tendência")
+
+future_steps = st.slider("Passos no futuro para previsão", 1, 50, 10)
+
+# Criando índices futuros
+last_index = df["time_index"].iloc[-1]
+future_index = np.arange(last_index + 1, last_index + 1 + future_steps).reshape(-1, 1)
+
+predictions = model.predict(future_index)
+
+# Exibindo tabela de previsão
+pred_df = pd.DataFrame({
+    "passo_futuro": range(1, future_steps + 1),
+    "temperatura_prevista": predictions
+})
+st.dataframe(pred_df)
+
+# -------------------------
+# ALERTA DE CONFORTO
+# -------------------------
+
+limite = 30
+if predictions.mean() > limite:
+    st.error(f"⚠️ Alerta: Média prevista ({predictions.mean():.2f}°C) acima do limite de {limite}°C!")
+else:
+    st.success(f"Ambiente estável. Média prevista: {predictions.mean():.2f}°C.")
+
+# -------------------------
+# GRÁFICO COM PREVISÃO
+# -------------------------
+
+fig2, ax2 = plt.subplots()
+# Histórico
+ax2.plot(df["time_index"], df["temperatura"], label="Histórico", color="blue")
+# Previsão
+ax2.plot(
+    range(last_index + 1, last_index + 1 + future_steps),
+    predictions,
+    label="Previsão (Regressão)",
+    color="red",
+    linestyle="--"
+)
+
+ax2.set_xlabel("Índice de Leitura")
+ax2.set_ylabel("Temperatura")
+ax2.legend()
+st.pyplot(fig2)
