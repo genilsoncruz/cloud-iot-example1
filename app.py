@@ -118,14 +118,16 @@ else:
 fig2, ax2 = plt.subplots()
 # Histórico
 ax2.plot(df["time_index"], df["temperatura"], label="Histórico", color="blue")
-# Previsão
-ax2.plot(
-    range(last_index + 1, last_index + 1 + future_steps),
-    predictions,
-    label="Previsão (Regressão)",
-    color="red",
-    linestyle="--"
-)
+
+if len(df):
+    # Previsão
+    ax2.plot(
+        range(last_index + 1, last_index + 1 + future_steps),
+        predictions,
+        label="Previsão (Regressão)",
+        color="red",
+        linestyle="--"
+    )
 
 ax2.set_xlabel("Índice de Leitura")
 ax2.set_ylabel("Temperatura")
