@@ -65,6 +65,13 @@ st.subheader("Estatísticas")
 st.write(df.describe())
 
 # -------------------------
+# PREVISÃO
+# -------------------------
+
+st.divider()
+st.subheader("Previsão de Tendência")
+
+# -------------------------
 # TREINAMENTO DO MODELO
 # -------------------------
 if len(df):
@@ -76,13 +83,6 @@ if len(df):
     
     model = LinearRegression()   
     model.fit(X, y)
-    
-    # -------------------------
-    # PREVISÃO
-    # -------------------------
-    
-    st.divider()
-    st.subheader("Previsão de Tendência")
     
     future_steps = st.slider("Passos no futuro para previsão", 1, 50, 10)
     
