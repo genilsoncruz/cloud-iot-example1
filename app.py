@@ -1,13 +1,20 @@
-# Updated app.py for error handling
+import streamlit as st
 
-def process_data(data):
+def main():
+    st.title('Dashboard')
+
+    # Simulated data fetching
+    data = fetch_data()  # This should be your actual data fetching function
+
     if not data:
-        raise ValueError("Data cannot be empty")
-    # Existing processing logic goes here
-    return processed_data
+        st.warning('No data available.')
+    else:
+        # Process and display your data here
+        st.write(data)
 
-# Example use
-try:
-    process_data(data)
-except ValueError as e:
-    print(e)
+def fetch_data():
+    # Placeholder for your data fetching logic
+    return []  # Returning empty list for testing
+
+if __name__ == '__main__':
+    main()
