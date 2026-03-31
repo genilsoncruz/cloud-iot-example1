@@ -78,7 +78,7 @@ y = df["temperatura"]
 
 model = LinearRegression()
 
-if X:
+if not X.empty or len(X) > 0:
     model.fit(X, y)
 
 # -------------------------
